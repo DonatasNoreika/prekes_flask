@@ -59,3 +59,11 @@ def new_order():
         db.session.commit()
         return redirect(url_for('orders'))
     return render_template('new_order.html', form=form)
+
+
+@app.route('/delete_product/<int:id>')
+def delete_product(id):
+    product = Product.query.get(id)
+    db.session.delete(product)
+    db.session.commit()
+    return redirect(url_for('products'))
