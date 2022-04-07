@@ -9,6 +9,14 @@
 <p><strong>Date:</strong> {{order.date}}</p>
 <p><strong>Customer:</strong> {{order.customer.name}} {{order.customer.lastname}}</p>
 <p><strong>Status:</strong> {{order.status.name}}</p>
+<h5>Lines:</h5>
+{% for line in order.lines %}
+<p><strong>Product:</strong> {{line.product.name}} | <strong>Price:</strong> {{line.product.price}} | <strong>Quantity:</strong> {{line.qty}} | <strong>SUM:</strong> {{ line.product.price * line.qty }}
+</p>
+
+
+{% endfor %}
+<p><a href="{{ url_for('add_line', id=order['id']) }}">Add Line</a></p>
 <hr/>
 {% endfor %}
 <p><a href="{{ url_for('new_order')}}">New Order</a></p>

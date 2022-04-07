@@ -2,10 +2,12 @@ from shop import app, db
 from flask import render_template, redirect, url_for
 from .models import (Customer,
                      MyOrder,
-                     Product)
+                     Product,
+                     OrderLine)
 from .forms import (CustomerForm,
                     ProductForm,
-                    OrderForm)
+                    OrderForm,
+                    LineForm)
 
 
 @app.route('/')
@@ -67,3 +69,16 @@ def delete_product(id):
     db.session.delete(product)
     db.session.commit()
     return redirect(url_for('products'))
+
+
+@app.route('/add_line/<int:id>', methods=['GET', 'POST'])
+def add_line(id):
+    form = LineForm()
+    order = MyOrder.query.get(id)
+    if form.validate_on_submit():
+        print("Labas")
+        line = OrderLine(product=form.product.data, qty=form.qty.data)
+        order.lines.append(line)
+        db.session.commit()
+        return redirect(url_for('orders'))
+    return render_template('add_line.html', form=form)
