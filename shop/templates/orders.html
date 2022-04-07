@@ -10,12 +10,14 @@
 <p><strong>Customer:</strong> {{order.customer.name}} {{order.customer.lastname}}</p>
 <p><strong>Status:</strong> {{order.status.name}}</p>
 <h5>Lines:</h5>
+{% set vars = {'total': 0} %}
 {% for line in order.lines %}
 <p><strong>Product:</strong> {{line.product.name}} | <strong>Price:</strong> {{line.product.price}} | <strong>Quantity:</strong> {{line.qty}} | <strong>SUM:</strong> {{ line.product.price * line.qty }}
+{% if vars.update({'total': vars.total + (line.product.price * line.qty)}) %}{% endif %}
 </p>
 
-
 {% endfor %}
+<p><strong>TOTAL:</strong> {{vars.total}}</strong></p>
 <p><a href="{{ url_for('add_line', id=order['id']) }}">Add Line</a></p>
 <hr/>
 {% endfor %}
